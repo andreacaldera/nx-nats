@@ -1,0 +1,19 @@
+{
+  "name": "nestjs-utils",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "nestjs-utils/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/nestjs-utils",
+        "main": "nestjs-utils/src/index.ts",
+        "tsConfig": "nestjs-utils/tsconfig.lib.json",
+        "assets": ["nestjs-utils/*.md"]
+      }
+    }
+  }
+}
