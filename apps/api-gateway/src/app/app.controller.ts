@@ -2,6 +2,7 @@ import { Controller, Get, Inject } from '@nestjs/common';
 
 import { firstValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
+import { CreateOrderDto } from '@nx-nats/nestjs-utils';
 
 @Controller()
 export class AppController {
@@ -9,9 +10,12 @@ export class AppController {
 
   @Get()
   async getData() {
-    const data = await firstValueFrom(
-      this.natsClient.send('createPayment', 'Request to order service')
+    const orderResult = await firstValueFrom(
+      this.natsClient.send<CreateOrderDto>('createOrder', {
+        productId: 'iphone-15',
+        quantity: 5,
+      })
     );
-    return `data ${data}`;
+    return { orderResult };
   }
 }
