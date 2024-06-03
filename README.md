@@ -21,7 +21,7 @@ Therefor on controller receiving messages from Nats, the type has to be manually
 e.g.
 
 ```
-@NatsReceiver('createOrder', createOrderSchema)
+@NatsReceiver('createOrder')
 async createOrder(@Payload() payload: CreateOrderDto) {
 return 'Some data'
 }
