@@ -1,19 +1,21 @@
 import { Controller } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+
 import {
+  MessageReceiver,
   NatsReceiver,
   RequestPayload,
-  ResponsePayload,
 } from '@nx-nats/nestjs-utils';
 
 const pattern = 'createOrder';
 
+type OrderControllerType = {
+  createOrder: MessageReceiver<typeof pattern>;
+};
+
 @Controller()
-export class OrderController {
+export class OrderController implements OrderControllerType {
   @NatsReceiver(pattern)
-  async createOrder(
-    @Payload() payload: RequestPayload<typeof pattern>
-  ): Promise<ResponsePayload<typeof pattern>> {
+  createOrder(payload: RequestPayload<typeof pattern>) {
     return {
       productId: `Order created for product ${payload.productId} with quantity ${payload.quantity}`,
     };

@@ -8,6 +8,7 @@ import {
   deleteOrderResponseSchema,
 } from './delete-order';
 
+// todo type NatsMessage
 export const NatsMessage = {
   createOrder: {
     request: createOrderRequestSchema,
@@ -30,5 +31,5 @@ export type ResponsePayload<T extends MessagePattern> = z.infer<
 >;
 
 export type MessageReceiver<T extends MessagePattern> = (
-  payload: RequestPayload<T>
+  payload: RequestPayload<'createOrder'>
 ) => Promise<ResponsePayload<T>> | ResponsePayload<T>;
