@@ -13,10 +13,10 @@ export class NatsClient {
     private client: ClientProxy
   ) {}
 
-  async send<K extends keyof NatsMessage, V extends z.infer<NatsMessage[K]>>(
-    pattern: K,
-    payload: V
-  ) {
+  async send<
+    K extends keyof typeof NatsMessage,
+    V extends z.infer<(typeof NatsMessage)[K]>
+  >(pattern: K, payload: V) {
     return await firstValueFrom(
       this.client.send<CreateOrderDto>(pattern, payload)
     );

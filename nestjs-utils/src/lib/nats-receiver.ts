@@ -4,15 +4,11 @@ import { ZodValidationPipe } from './zod-validation-pipe';
 
 import { NatsMessage } from './nats-message';
 
-export const NatsReceiver = <
-  K extends keyof NatsMessage,
-  V extends NatsMessage[K]
->(
-  pattern: K,
-  schema: V
+export const NatsReceiver = <K extends keyof typeof NatsMessage>(
+  pattern: K
 ) => {
   return applyDecorators(
-    UsePipes(new ZodValidationPipe(schema)),
+    UsePipes(new ZodValidationPipe(NatsMessage[pattern])),
     EventPattern(pattern)
   );
 };
