@@ -23,4 +23,12 @@ export class AppController {
     });
     return { orderResult };
   }
+
+  @Get('delete-order')
+  async deleteOrder() {
+    const orderResult = await this.natsClient.send('deleteOrder', {
+      orderToDelete: 'order-123',
+    });
+    return { orderResult };
+  }
 }

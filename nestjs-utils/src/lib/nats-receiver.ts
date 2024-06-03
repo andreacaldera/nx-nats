@@ -8,7 +8,7 @@ export const NatsReceiver = <K extends keyof typeof NatsMessage>(
   pattern: K
 ) => {
   return applyDecorators(
-    UsePipes(new ZodValidationPipe(NatsMessage[pattern])),
+    UsePipes(new ZodValidationPipe(NatsMessage[pattern]['request'])),
     EventPattern(pattern)
   );
 };

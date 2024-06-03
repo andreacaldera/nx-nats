@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 import { firstValueFrom } from 'rxjs';
-import { CreateOrderDto } from './order-dto';
+
 import { NatsMessage } from './nats-message';
 import { z } from 'zod';
 
@@ -15,10 +15,12 @@ export class NatsClient {
 
   async send<
     K extends keyof typeof NatsMessage,
-    V extends z.infer<(typeof NatsMessage)[K]>
-  >(pattern: K, payload: V) {
-    return await firstValueFrom(
-      this.client.send<CreateOrderDto>(pattern, payload)
-    );
+    V extends z.infer<(typeof NatsMessage)[K]['request']>,
+    R extends z.infer<(typeof NatsMessage)[K]['response']>
+  >(pattern: K, payload: V): Promise<R> {
+    const response = await firstValueFrom(this.client.send(pattern, payload));
+    const responseSchema = NatsMessage[pattern]['response'];
+    const parsedResponse = responseSchema.parse(response);
+    return parsedResponse as R;
   }
 }
