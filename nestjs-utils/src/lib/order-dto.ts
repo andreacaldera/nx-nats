@@ -8,3 +8,11 @@ export const createOrderSchema = z
   .required();
 
 export type CreateOrderDto = z.infer<typeof createOrderSchema>;
+
+export const deleteOrderSchema = z
+  .object({
+    orderToDelete: z.string(),
+  })
+  .required();
+
+export type DeleteOrderSchema = z.infer<typeof deleteOrderSchema>;

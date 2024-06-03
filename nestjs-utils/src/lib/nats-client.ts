@@ -3,11 +3,8 @@ import { ClientProxy } from '@nestjs/microservices';
 
 import { firstValueFrom } from 'rxjs';
 import { CreateOrderDto } from './order-dto';
-
-type NatsMessage = {
-  createOrder: CreateOrderDto;
-  another: { notImplemented: true };
-};
+import { NatsMessage } from './nats-message';
+import { z } from 'zod';
 
 @Injectable()
 export class NatsClient {
@@ -16,7 +13,7 @@ export class NatsClient {
     private client: ClientProxy
   ) {}
 
-  async send<K extends keyof NatsMessage, V extends NatsMessage[K]>(
+  async send<K extends keyof NatsMessage, V extends z.infer<NatsMessage[K]>>(
     pattern: K,
     payload: V
   ) {

@@ -1,15 +1,14 @@
-import { Controller, UsePipes } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import { Payload } from '@nestjs/microservices';
 import {
   CreateOrderDto,
-  ZodValidationPipe,
+  NatsReceiver,
   createOrderSchema,
 } from '@nx-nats/nestjs-utils';
 
 @Controller()
 export class OrderController {
-  @UsePipes(new ZodValidationPipe(createOrderSchema))
-  @EventPattern('createOrder')
+  @NatsReceiver('createOrder', createOrderSchema)
   async createOrder(@Payload() payload: CreateOrderDto) {
     return `Order created for product ${payload.productId} with quantity ${payload.quantity}`;
   }
