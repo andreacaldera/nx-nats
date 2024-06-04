@@ -31,5 +31,5 @@ export type ResponsePayload<T extends MessagePattern> = z.infer<
 >;
 
 export type MessageReceiver<T extends MessagePattern> = (
-  payload: RequestPayload<'createOrder'>
+  payload: RequestPayload<T>
 ) => Promise<ResponsePayload<T>> | ResponsePayload<T>;
